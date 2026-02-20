@@ -1,0 +1,51 @@
+# Data Quality Validation Pipeline Configuration
+# Override any of these values or set environment variables prefixed with DQV_
+
+pipeline:
+  input_file: "data/customers_raw.csv"
+  output_dir: "output"
+  log_file: "output/pipeline.log"
+  log_level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+
+validation:
+  name_min_length: 2
+  name_max_length: 50
+  address_min_length: 10
+  address_max_length: 200
+  max_income: 10000000
+  valid_statuses:
+    - active
+    - inactive
+    - suspended
+
+cleaning:
+  phone_format: "XXX-XXX-XXXX"
+  date_format: "%Y-%m-%d"
+  missing_string_fill: "[UNKNOWN]"
+  missing_numeric_fill: 0
+  missing_status_fill: "unknown"
+
+masking:
+  mask_char: "*"
+  preserve_email_domain: true
+  preserve_phone_last_digits: 4
+  preserve_dob_year: true
+
+pii:
+  high_risk_columns:
+    - first_name
+    - last_name
+    - email
+    - phone
+    - date_of_birth
+    - address
+  medium_risk_columns:
+    - income
+
+logging:
+  console_output: true
+  structured: false
+  rotation_type: "size"  # "size" or "time"
+  max_bytes: 10485760    # 10MB
+  backup_count: 5
+  rotation_interval: "midnight"  # for time-based rotation
