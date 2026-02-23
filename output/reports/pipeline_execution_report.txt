@@ -1,0 +1,70 @@
+PIPELINE EXECUTION REPORT
+=========================
+Timestamp: 2026-02-23 12:10:12
+
+Stage 1: LOAD
+[OK] Loaded customers_raw.csv
+- 10 rows, 10 columns
+
+Stage 2: PROFILE
+[OK] Generated data quality profile
+- Found 12 quality issues
+
+Stage 3: DETECT_PII
+[OK] Detected PII columns
+- 7 PII columns identified
+- 10 email addresses
+- 10 phone numbers
+- 8 addresses
+- 9 dates of birth
+
+Stage 4: CLEAN
+[OK] Data cleaned and normalized
+- Normalized phone (3 rows)
+- Normalized date_of_birth, created_date (4 rows)
+- Normalized first_name, last_name (1 rows)
+- Normalized email (1 rows)
+- Filled missing first_name (1 rows)
+- Filled missing last_name (1 rows)
+- Filled missing address (2 rows)
+- Filled missing income (1 rows)
+- Filled missing account_status (1 rows)
+
+Stage 5: VALIDATE
+[OK] Validation complete (some issues remain)
+- 3/10 rows valid
+- first_name: 1 failures
+- last_name: 1 failures
+- date_of_birth: 1 failures
+- address: 2 failures
+- account_status: 1 failures
+- created_date: 1 failures
+
+Stage 6: MASK
+[OK] PII masked successfully
+- Masked first_name
+- Masked last_name
+- Masked email
+- Masked phone
+- Masked address
+- Masked date_of_birth
+- Masked created_date
+
+Stage 7: SAVE
+[OK] Outputs saved
+- customers_cleaned.csv
+- customers_cleaned_masked.csv
+- data_quality_report.txt
+- pii_detection_report.txt
+- cleaning_log.txt
+- validation_results.txt
+- masked_sample.txt
+
+SUMMARY:
+- Input: 10 rows (raw)
+- Output: 10 rows (clean, masked, validated)
+- Quality: PASS
+- PII Risk: MITIGATED (all masked)
+- Duration: 0.60 seconds
+
+Status: SUCCESS

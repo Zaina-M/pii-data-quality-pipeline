@@ -1,0 +1,40 @@
+PII DETECTION REPORT
+======================
+
+RISK ASSESSMENT:
+- HIGH: first_name, last_name, email, phone, date_of_birth, address
+- MEDIUM: income
+
+DETECTED PII:
+- Emails found: 10 (100%)
+- Phone numbers found: 10 (100%)
+- Addresses found: 8 (80%)
+- Dates of birth found: 9 (90%)
+
+PII COLUMN ANALYSIS:
+- first_name: NAME (HIGH) - 90.0% populated
+- last_name: NAME (HIGH) - 90.0% populated
+- email: CONTACT (HIGH) - 100.0% populated
+- phone: CONTACT (HIGH) - 100.0% populated
+- date_of_birth: PERSONAL (HIGH) - 100.0% populated
+- address: LOCATION (HIGH) - 80.0% populated
+- income: FINANCIAL (MEDIUM) - 90.0% populated
+
+PATTERN-BASED DETECTION:
+- EMAIL pattern: 10 rows affected
+- PHONE pattern: 10 rows affected
+- DATE pattern: 10 rows affected
+- ADDRESS pattern: 8 rows affected
+
+EXPOSURE RISK:
+If this dataset were breached, attackers could:
+- Phish customers (have emails)
+- Spoof identities (have names + DOB + address)
+- Social engineer (have phone numbers)
+
+MITIGATION RECOMMENDATIONS:
+- Mask all PII before sharing with analytics teams
+- Implement role-based access control
+- Encrypt PII columns at rest
+- Audit access to PII data
+- Consider tokenization for sensitive identifiers
