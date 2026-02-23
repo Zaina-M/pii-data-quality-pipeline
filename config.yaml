@@ -43,7 +43,7 @@ pii:
     - income
 
 logging:
-  console_output: true
+  console_output: false
   structured: false
   rotation_type: "size"  # "size" or "time"
   max_bytes: 10485760    # 10MB
