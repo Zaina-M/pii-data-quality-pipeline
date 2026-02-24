@@ -1,0 +1,172 @@
+2026-02-23 12:09:08 - INFO - pipeline - Starting data quality pipeline
+2026-02-23 12:09:08 - INFO - pipeline - Stage 1: Loading raw data
+2026-02-23 12:09:08 - INFO - pipeline - Loaded 10 rows, 10 columns
+2026-02-23 12:09:08 - INFO - pipeline - Stage 2: Profiling data quality
+2026-02-23 12:09:08 - INFO - pipeline - Found 12 quality issues
+2026-02-23 12:09:08 - INFO - pipeline - Stage 3: Detecting PII
+2026-02-23 12:09:08 - INFO - pipeline - Detected 7 PII columns
+2026-02-23 12:09:08 - INFO - pipeline - Stage 4: Cleaning data
+2026-02-23 12:09:08 - INFO - pipeline - Cleaning complete: 9 actions taken
+2026-02-23 12:09:08 - INFO - pipeline - Stage 5: Validating data
+2026-02-23 12:09:08 - INFO - pipeline - Validation: 3 passed, 7 failed
+2026-02-23 12:09:08 - INFO - pipeline - Stage 6: Masking PII
+2026-02-23 12:09:08 - INFO - pipeline - Masked 7 columns
+2026-02-23 12:09:08 - INFO - pipeline - Stage 7: Saving outputs
+2026-02-23 12:09:08 - INFO - pipeline - Saved 7 files to structured output directories
+2026-02-23 12:09:08 - INFO - pipeline - PIPELINE EXECUTION REPORT
+2026-02-23 12:09:08 - INFO - pipeline - =========================
+2026-02-23 12:09:08 - INFO - pipeline - Timestamp: 2026-02-23 12:09:08
+2026-02-23 12:09:08 - INFO - pipeline - 
+2026-02-23 12:09:08 - INFO - pipeline - Stage 1: LOAD
+2026-02-23 12:09:08 - INFO - pipeline - [OK] Loaded customers_raw.csv
+2026-02-23 12:09:08 - INFO - pipeline - - 10 rows, 10 columns
+2026-02-23 12:09:08 - INFO - pipeline - 
+2026-02-23 12:09:08 - INFO - pipeline - Stage 2: PROFILE
+2026-02-23 12:09:08 - INFO - pipeline - [OK] Generated data quality profile
+2026-02-23 12:09:08 - INFO - pipeline - - Found 12 quality issues
+2026-02-23 12:09:08 - INFO - pipeline - 
+2026-02-23 12:09:08 - INFO - pipeline - Stage 3: DETECT_PII
+2026-02-23 12:09:08 - INFO - pipeline - [OK] Detected PII columns
+2026-02-23 12:09:08 - INFO - pipeline - - 7 PII columns identified
+2026-02-23 12:09:08 - INFO - pipeline - - 10 email addresses
+2026-02-23 12:09:08 - INFO - pipeline - - 10 phone numbers
+2026-02-23 12:09:08 - INFO - pipeline - - 8 addresses
+2026-02-23 12:09:08 - INFO - pipeline - - 9 dates of birth
+2026-02-23 12:09:08 - INFO - pipeline - 
+2026-02-23 12:09:08 - INFO - pipeline - Stage 4: CLEAN
+2026-02-23 12:09:08 - INFO - pipeline - [OK] Data cleaned and normalized
+2026-02-23 12:09:08 - INFO - pipeline - - Normalized phone (3 rows)
+2026-02-23 12:09:08 - INFO - pipeline - - Normalized date_of_birth, created_date (4 rows)
+2026-02-23 12:09:08 - INFO - pipeline - - Normalized first_name, last_name (1 rows)
+2026-02-23 12:09:08 - INFO - pipeline - - Normalized email (1 rows)
+2026-02-23 12:09:08 - INFO - pipeline - - Filled missing first_name (1 rows)
+2026-02-23 12:09:08 - INFO - pipeline - - Filled missing last_name (1 rows)
+2026-02-23 12:09:08 - INFO - pipeline - - Filled missing address (2 rows)
+2026-02-23 12:09:08 - INFO - pipeline - - Filled missing income (1 rows)
+2026-02-23 12:09:08 - INFO - pipeline - - Filled missing account_status (1 rows)
+2026-02-23 12:09:08 - INFO - pipeline - 
+2026-02-23 12:09:08 - INFO - pipeline - Stage 5: VALIDATE
+2026-02-23 12:09:08 - INFO - pipeline - [OK] Validation complete (some issues remain)
+2026-02-23 12:09:08 - INFO - pipeline - - 3/10 rows valid
+2026-02-23 12:09:08 - INFO - pipeline - - first_name: 1 failures
+2026-02-23 12:09:08 - INFO - pipeline - - last_name: 1 failures
+2026-02-23 12:09:08 - INFO - pipeline - - date_of_birth: 1 failures
+2026-02-23 12:09:08 - INFO - pipeline - - address: 2 failures
+2026-02-23 12:09:08 - INFO - pipeline - - account_status: 1 failures
+2026-02-23 12:09:08 - INFO - pipeline - - created_date: 1 failures
+2026-02-23 12:09:08 - INFO - pipeline - 
+2026-02-23 12:09:08 - INFO - pipeline - Stage 6: MASK
+2026-02-23 12:09:08 - INFO - pipeline - [OK] PII masked successfully
+2026-02-23 12:09:08 - INFO - pipeline - - Masked first_name
+2026-02-23 12:09:08 - INFO - pipeline - - Masked last_name
+2026-02-23 12:09:08 - INFO - pipeline - - Masked email
+2026-02-23 12:09:08 - INFO - pipeline - - Masked phone
+2026-02-23 12:09:08 - INFO - pipeline - - Masked address
+2026-02-23 12:09:08 - INFO - pipeline - - Masked date_of_birth
+2026-02-23 12:09:08 - INFO - pipeline - - Masked created_date
+2026-02-23 12:09:08 - INFO - pipeline - 
+2026-02-23 12:09:08 - INFO - pipeline - Stage 7: SAVE
+2026-02-23 12:09:08 - INFO - pipeline - [OK] Outputs saved
+2026-02-23 12:09:08 - INFO - pipeline - - customers_cleaned.csv
+2026-02-23 12:09:08 - INFO - pipeline - - customers_cleaned_masked.csv
+2026-02-23 12:09:08 - INFO - pipeline - - data_quality_report.txt
+2026-02-23 12:09:08 - INFO - pipeline - - pii_detection_report.txt
+2026-02-23 12:09:08 - INFO - pipeline - - cleaning_log.txt
+2026-02-23 12:09:08 - INFO - pipeline - - validation_results.txt
+2026-02-23 12:09:08 - INFO - pipeline - - masked_sample.txt
+2026-02-23 12:09:08 - INFO - pipeline - 
+2026-02-23 12:09:08 - INFO - pipeline - SUMMARY:
+2026-02-23 12:09:08 - INFO - pipeline - - Input: 10 rows (raw)
+2026-02-23 12:09:08 - INFO - pipeline - - Output: 10 rows (clean, masked, validated)
+2026-02-23 12:09:08 - INFO - pipeline - - Quality: PASS
+2026-02-23 12:09:08 - INFO - pipeline - - PII Risk: MITIGATED (all masked)
+2026-02-23 12:09:08 - INFO - pipeline - - Duration: 0.68 seconds
+2026-02-23 12:09:08 - INFO - pipeline - 
+2026-02-23 12:09:08 - INFO - pipeline - Status: SUCCESS
+2026-02-23 12:09:08 - INFO - pipeline - Pipeline completed successfully
+2026-02-23 12:10:12 - INFO - pipeline - Starting data quality pipeline
+2026-02-23 12:10:12 - INFO - pipeline - Stage 1: Loading raw data
+2026-02-23 12:10:12 - INFO - pipeline - Loaded 10 rows, 10 columns
+2026-02-23 12:10:12 - INFO - pipeline - Stage 2: Profiling data quality
+2026-02-23 12:10:12 - INFO - pipeline - Found 12 quality issues
+2026-02-23 12:10:12 - INFO - pipeline - Stage 3: Detecting PII
+2026-02-23 12:10:12 - INFO - pipeline - Detected 7 PII columns
+2026-02-23 12:10:12 - INFO - pipeline - Stage 4: Cleaning data
+2026-02-23 12:10:12 - INFO - pipeline - Cleaning complete: 9 actions taken
+2026-02-23 12:10:12 - INFO - pipeline - Stage 5: Validating data
+2026-02-23 12:10:13 - INFO - pipeline - Validation: 3 passed, 7 failed
+2026-02-23 12:10:13 - INFO - pipeline - Stage 6: Masking PII
+2026-02-23 12:10:13 - INFO - pipeline - Masked 7 columns
+2026-02-23 12:10:13 - INFO - pipeline - Stage 7: Saving outputs
+2026-02-23 12:10:13 - INFO - pipeline - Saved 7 files to structured output directories
+2026-02-23 12:10:13 - INFO - pipeline - PIPELINE EXECUTION REPORT
+2026-02-23 12:10:13 - INFO - pipeline - =========================
+2026-02-23 12:10:13 - INFO - pipeline - Timestamp: 2026-02-23 12:10:12
+2026-02-23 12:10:13 - INFO - pipeline - 
+2026-02-23 12:10:13 - INFO - pipeline - Stage 1: LOAD
+2026-02-23 12:10:13 - INFO - pipeline - [OK] Loaded customers_raw.csv
+2026-02-23 12:10:13 - INFO - pipeline - - 10 rows, 10 columns
+2026-02-23 12:10:13 - INFO - pipeline - 
+2026-02-23 12:10:13 - INFO - pipeline - Stage 2: PROFILE
+2026-02-23 12:10:13 - INFO - pipeline - [OK] Generated data quality profile
+2026-02-23 12:10:13 - INFO - pipeline - - Found 12 quality issues
+2026-02-23 12:10:13 - INFO - pipeline - 
+2026-02-23 12:10:13 - INFO - pipeline - Stage 3: DETECT_PII
+2026-02-23 12:10:13 - INFO - pipeline - [OK] Detected PII columns
+2026-02-23 12:10:13 - INFO - pipeline - - 7 PII columns identified
+2026-02-23 12:10:13 - INFO - pipeline - - 10 email addresses
+2026-02-23 12:10:13 - INFO - pipeline - - 10 phone numbers
+2026-02-23 12:10:13 - INFO - pipeline - - 8 addresses
+2026-02-23 12:10:13 - INFO - pipeline - - 9 dates of birth
+2026-02-23 12:10:13 - INFO - pipeline - 
+2026-02-23 12:10:13 - INFO - pipeline - Stage 4: CLEAN
+2026-02-23 12:10:13 - INFO - pipeline - [OK] Data cleaned and normalized
+2026-02-23 12:10:13 - INFO - pipeline - - Normalized phone (3 rows)
+2026-02-23 12:10:13 - INFO - pipeline - - Normalized date_of_birth, created_date (4 rows)
+2026-02-23 12:10:13 - INFO - pipeline - - Normalized first_name, last_name (1 rows)
+2026-02-23 12:10:13 - INFO - pipeline - - Normalized email (1 rows)
+2026-02-23 12:10:13 - INFO - pipeline - - Filled missing first_name (1 rows)
+2026-02-23 12:10:13 - INFO - pipeline - - Filled missing last_name (1 rows)
+2026-02-23 12:10:13 - INFO - pipeline - - Filled missing address (2 rows)
+2026-02-23 12:10:13 - INFO - pipeline - - Filled missing income (1 rows)
+2026-02-23 12:10:13 - INFO - pipeline - - Filled missing account_status (1 rows)
+2026-02-23 12:10:13 - INFO - pipeline - 
+2026-02-23 12:10:13 - INFO - pipeline - Stage 5: VALIDATE
+2026-02-23 12:10:13 - INFO - pipeline - [OK] Validation complete (some issues remain)
+2026-02-23 12:10:13 - INFO - pipeline - - 3/10 rows valid
+2026-02-23 12:10:13 - INFO - pipeline - - first_name: 1 failures
+2026-02-23 12:10:13 - INFO - pipeline - - last_name: 1 failures
+2026-02-23 12:10:13 - INFO - pipeline - - date_of_birth: 1 failures
+2026-02-23 12:10:13 - INFO - pipeline - - address: 2 failures
+2026-02-23 12:10:13 - INFO - pipeline - - account_status: 1 failures
+2026-02-23 12:10:13 - INFO - pipeline - - created_date: 1 failures
+2026-02-23 12:10:13 - INFO - pipeline - 
+2026-02-23 12:10:13 - INFO - pipeline - Stage 6: MASK
+2026-02-23 12:10:13 - INFO - pipeline - [OK] PII masked successfully
+2026-02-23 12:10:13 - INFO - pipeline - - Masked first_name
+2026-02-23 12:10:13 - INFO - pipeline - - Masked last_name
+2026-02-23 12:10:13 - INFO - pipeline - - Masked email
+2026-02-23 12:10:13 - INFO - pipeline - - Masked phone
+2026-02-23 12:10:13 - INFO - pipeline - - Masked address
+2026-02-23 12:10:13 - INFO - pipeline - - Masked date_of_birth
+2026-02-23 12:10:13 - INFO - pipeline - - Masked created_date
+2026-02-23 12:10:13 - INFO - pipeline - 
+2026-02-23 12:10:13 - INFO - pipeline - Stage 7: SAVE
+2026-02-23 12:10:13 - INFO - pipeline - [OK] Outputs saved
+2026-02-23 12:10:13 - INFO - pipeline - - customers_cleaned.csv
+2026-02-23 12:10:13 - INFO - pipeline - - customers_cleaned_masked.csv
+2026-02-23 12:10:13 - INFO - pipeline - - data_quality_report.txt
+2026-02-23 12:10:13 - INFO - pipeline - - pii_detection_report.txt
+2026-02-23 12:10:13 - INFO - pipeline - - cleaning_log.txt
+2026-02-23 12:10:13 - INFO - pipeline - - validation_results.txt
+2026-02-23 12:10:13 - INFO - pipeline - - masked_sample.txt
+2026-02-23 12:10:13 - INFO - pipeline - 
+2026-02-23 12:10:13 - INFO - pipeline - SUMMARY:
+2026-02-23 12:10:13 - INFO - pipeline - - Input: 10 rows (raw)
+2026-02-23 12:10:13 - INFO - pipeline - - Output: 10 rows (clean, masked, validated)
+2026-02-23 12:10:13 - INFO - pipeline - - Quality: PASS
+2026-02-23 12:10:13 - INFO - pipeline - - PII Risk: MITIGATED (all masked)
+2026-02-23 12:10:13 - INFO - pipeline - - Duration: 0.60 seconds
+2026-02-23 12:10:13 - INFO - pipeline - 
+2026-02-23 12:10:13 - INFO - pipeline - Status: SUCCESS
+2026-02-23 12:10:13 - INFO - pipeline - Pipeline completed successfully
