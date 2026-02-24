@@ -1,5 +1,39 @@
 # Reflection: Data Quality Validation Pipeline
 
+## Project Overview
+
+This document reflects on the implementation of a complete data quality validation pipeline, covering the challenges encountered, decisions made, and lessons learned.
+
+### Pipeline Architecture
+
+```mermaid
+flowchart LR
+    subgraph Input
+        RAW[customers_raw.csv<br/>10 rows, 10 columns]
+    end
+
+    subgraph Processing
+        LOAD[Load] --> PROFILE[Profile]
+        PROFILE --> DETECT[Detect PII]
+        DETECT --> CLEAN[Clean]
+        CLEAN --> VALIDATE[Validate]
+        VALIDATE --> MASK[Mask]
+    end
+
+    subgraph Output
+        CSV1[customers_cleaned.csv]
+        CSV2[customers_cleaned_masked.csv]
+        REPORTS[Reports]
+    end
+
+    RAW --> LOAD
+    MASK --> CSV1
+    MASK --> CSV2
+    MASK --> REPORTS
+```
+
+---
+
 ## 1. Biggest Data Quality Issues
 
 ### Top 5 Problems Found
@@ -34,6 +68,38 @@
 ---
 
 ## 2. PII Risk Assessment
+
+### Risk Classification Model
+
+```mermaid
+flowchart TD
+    subgraph HighRisk["HIGH RISK - Identity Theft Vector"]
+        A[first_name + last_name]
+        B[email]
+        C[phone]
+        D[date_of_birth]
+        E[address]
+    end
+
+    subgraph MediumRisk["MEDIUM RISK - Financial Exposure"]
+        F[income]
+    end
+
+    subgraph Combined["Combined Risk"]
+        G[Full Identity Profile]
+        H[Targeted Fraud]
+    end
+
+    A --> G
+    D --> G
+    E --> G
+    B --> H
+    F --> H
+
+    style HighRisk fill:#fffff
+    style MediumRisk fill:#fffff
+    style Combined fill:#fffff
+```
 
 ### PII Detected
 
@@ -111,6 +177,38 @@ If this 10-row dataset scaled to production (100k+ records), a breach could expo
 
 ## 4. Validation Strategy
 
+### Validation Architecture
+
+```mermaid
+flowchart TD
+    subgraph Schema["Pandera DataFrameSchema"]
+        S1[Column Definitions]
+        S2[Type Constraints]
+        S3[Check Functions]
+    end
+
+    subgraph Checks["Validation Checks"]
+        C1[is_valid_name]
+        C2[is_valid_email]
+        C3[is_valid_phone]
+        C4[is_valid_date]
+        C5[is_valid_status]
+    end
+
+    subgraph Results["Validation Results"]
+        R1[Pass]
+        R2[Fail with Details]
+    end
+
+    S1 --> C1
+    S1 --> C2
+    S1 --> C3
+    S2 --> C4
+    S3 --> C5
+    C1 --> R1
+    C2 --> R2
+```
+
 ### Current Implementation: Pandera Schema
 
 The pipeline uses Pandera's `DataFrameSchema` for declarative validation, replacing custom validators:
@@ -159,6 +257,31 @@ Benefits of this approach:
 ---
 
 ## 5. Production Operations
+
+### Pipeline Execution Flow
+
+```mermaid
+flowchart TD
+    START[Start Pipeline] --> LOAD[Load Data]
+    LOAD --> CHECK{Validation<br/>Passed?}
+    
+    CHECK -->|Yes| PROCESS[Continue Processing]
+    CHECK -->|No| THRESHOLD{Failures<br/>> 10%?}
+    
+    THRESHOLD -->|Yes| HALT[Halt Pipeline]
+    THRESHOLD -->|No| LOG[Log Warnings]
+    
+    HALT --> ALERT[Alert Data Team]
+    ALERT --> QUARANTINE[Quarantine Bad Rows]
+    
+    LOG --> PROCESS
+    PROCESS --> SAVE[Save Results]
+    SAVE --> REPORT[Generate Report]
+    REPORT --> NOTIFY[Send Notifications]
+    
+    style HALT fill:#ffcdd2
+    style PROCESS fill:#c8e6c9
+```
 
 ### Execution Schedule
 
@@ -259,16 +382,37 @@ ELSE:
 
 ## Summary
 
-This project demonstrated the core data engineering workflow: profile, detect, validate, clean, mask, and orchestrate. Key insights:
+This project demonstrated the core data engineering workflow: profile, detect, validate, clean, mask, and orchestrate.
+
+### Data Quality Pipeline Workflow
+
+```mermaid
+flowchart LR
+    subgraph Workflow["End-to-End Pipeline"]
+        P[Profile] --> D[Detect PII]
+        D --> V[Validate]
+        V --> C[Clean]
+        C --> M[Mask]
+        M --> O[Orchestrate]
+    end
+
+    style Workflow fill:#fffff
+```
+
+### Key Insights
 
 - Data quality is a continuous process, not a one-time fix
 - PII protection requires both technical controls and governance
 - Production pipelines need monitoring, alerting, and failure recovery
 - The 40% time estimate for data cleaning is conservative for messy real-world data
 
+### Production Readiness Roadmap
+
+
+
 Next steps for production readiness:
 
-1. Add database connectivity
+1. Add database connectivity (PostgreSQL/MySQL)
 2. Add Docker containerization
 3. Integrate with workflow orchestrator (Airflow)
-4. Build monitoring dashboard
+4. Build monitoring dashboard with Grafana
