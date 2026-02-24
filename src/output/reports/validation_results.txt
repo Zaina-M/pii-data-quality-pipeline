@@ -1,0 +1,36 @@
+VALIDATION RESULTS (Pandera)
+============================
+
+PASS: 3 rows passed all checks
+FAIL: 7 rows failed
+
+FAILURES BY COLUMN:
+-------------------
+
+account_status:
+- Row 4: 'unknown' (account_status must be one of: suspended, active, inactive)
+
+address:
+- Row 2: '[UNKNOWN]' (address must be at least 10 chars)
+- Row 9: '[UNKNOWN]' (address must be at least 10 chars)
+
+created_date:
+- Row 10: '[INVALID_DATE]' (created_date must be YYYY-MM-DD format)
+
+date_of_birth:
+- Row 6: '[INVALID_DATE]' (date_of_birth must be YYYY-MM-DD format)
+
+first_name:
+- Row 3: '[UNKNOWN]' (first_name must be alphabetic)
+
+last_name:
+- Row 5: '[UNKNOWN]' (last_name must be alphabetic)
+
+SUMMARY BY RULE:
+----------------
+- address must be at least 10 chars: 2 failures
+- first_name must be alphabetic: 1 failures
+- last_name must be alphabetic: 1 failures
+- date_of_birth must be YYYY-MM-DD format: 1 failures
+- account_status must be one of: suspended, active, inactive: 1 failures
+- created_date must be YYYY-MM-DD format: 1 failures
