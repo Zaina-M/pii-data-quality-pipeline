@@ -48,22 +48,31 @@ class PIIMasker:
             return f"***-***-{digits[-4:]}"
         return phone_str
     
+  
     def mask_address(self, address: str) -> str:
         """Mask address: '123 Main St...' -> '[MASKED ADDRESS]'"""
         if pd.isna(address) or str(address).strip() == '' or str(address) == '[UNKNOWN]':
             return str(address)
         return '[MASKED ADDRESS]'
     
+    
+    def mask_created_date(self, created_date: str) -> str:
+     try:
+        parsed = pd.to_datetime(created_date, errors='coerce')
+        if pd.isna(parsed):
+            return 'UNKNOWN'
+        return str(created_date)
+     except Exception:
+        return 'UNKNOWN'
+     
+   
     def mask_dob(self, dob: str) -> str:
-        """Mask DOB: '1985-03-15' -> '1985-**-**'"""
-        if pd.isna(dob) or str(dob).strip() == '':
-            return str(dob)
-        dob_str = str(dob).strip()
-        if re.match(r'^\d{4}-\d{2}-\d{2}$', dob_str):
-            return f"{dob_str[:4]}-**-**"
-        if re.match(r'^\d{4}', dob_str):
-            return f"{dob_str[:4]}-**-**"
-        return '[MASKED DOB]'
+     parsed = pd.to_datetime(dob, errors='coerce')
+
+     if pd.isna(parsed):
+        return 'UNKNOWN'
+
+     return f"{parsed.year}-**-**"
     
     def mask_all(self) -> pd.DataFrame:
         """Apply all masking operations."""
@@ -74,6 +83,7 @@ class PIIMasker:
             'phone': self.mask_phone,
             'address': self.mask_address,
             'date_of_birth': self.mask_dob,
+            'created_date': self.mask_created_date,
         }
         
         for col, mask_func in masking_map.items():
