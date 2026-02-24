@@ -68,11 +68,20 @@ class DataQualityPipeline:
     7. SAVE - Output results
     """
     
-    def __init__(self, input_path: str, output_dir: str, config: dict = None):
+    def __init__(self, input_path: str, output_dir: str, config: dict = None, logger: logging.Logger = None):
         self.input_path = Path(input_path)
         self.output_dir = Path(output_dir)
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.config = config or {}
+        
+        # Create structured output directories relative to output_dir
+        self.csv_dir = self.output_dir / 'csv'
+        self.reports_dir = self.output_dir / 'reports'
+        self.logs_dir = self.output_dir / 'logs'
+        
+        self.csv_dir.mkdir(parents=True, exist_ok=True)
+        self.reports_dir.mkdir(parents=True, exist_ok=True)
+        self.logs_dir.mkdir(parents=True, exist_ok=True)
         
         self.df_raw = None
         self.df_cleaned = None
@@ -83,7 +92,9 @@ class DataQualityPipeline:
         
         self.start_time = None
         self.end_time = None
-        self.logger = logging.getLogger(__name__)
+        
+        # Use provided logger or get the configured 'pipeline' logger
+        self.logger = logger if logger else logging.getLogger('pipeline')
     
     def run(self) -> bool:
         """Execute all pipeline stages."""
@@ -287,22 +298,32 @@ class DataQualityPipeline:
         self.logger.info("Stage 7: Saving outputs")
         
         try:
-            output_csv = self.output_dir / 'customers_cleaned.csv'
-            self.df_masked.to_csv(output_csv, index=False)
+            # Save CSV files to csv/ directory
+            output_csv = self.csv_dir / 'customers_cleaned.csv'
+            self.df_cleaned.to_csv(output_csv, index=False)
             
+            output_masked_csv = self.csv_dir / 'customers_cleaned_masked.csv'
+            self.df_masked.to_csv(output_masked_csv, index=False)
+            
+            # Save report files to reports/ directory
             report_files = []
             for report_name, content in self.reports.items():
                 filename = f"{report_name}.txt"
-                filepath = self.output_dir / filename
+                if report_name == 'cleaning_log':
+                    # cleaning_log goes to logs/ directory
+                    filepath = self.logs_dir / filename
+                else:
+                    # other reports go to reports/ directory
+                    filepath = self.reports_dir / filename
                 with open(filepath, 'w') as f:
                     f.write(content)
                 report_files.append(filename)
             
             stage.success(
                 "Outputs saved",
-                [f"customers_cleaned.csv"] + report_files
+                ["customers_cleaned.csv", "customers_cleaned_masked.csv"] + report_files
             )
-            self.logger.info(f"Saved {len(report_files) + 1} files to {self.output_dir}")
+            self.logger.info(f"Saved {len(report_files) + 2} files to structured output directories")
         except Exception as e:
             stage.fail(f"Save failed: {str(e)}")
             raise
@@ -343,7 +364,8 @@ class DataQualityPipeline:
         
         execution_report = "\n".join(report)
         
-        filepath = self.output_dir / 'pipeline_execution_report.txt'
+        # Save pipeline execution report to reports/ directory
+        filepath = self.reports_dir / 'pipeline_execution_report.txt'
         with open(filepath, 'w') as f:
             f.write(execution_report)
         
@@ -374,25 +396,35 @@ def main():
     config_dict = load_config(args.config)
     config = Config(config_dict)
     
-    logger = setup_logging(config)
-    
     script_dir = Path(__file__).parent.parent
+    
+    # Set up absolute paths for output and logging
+    if args.output:
+        output_dir = Path(args.output)
+    else:
+        output_dir = script_dir / config.output_dir
+    
+    # Create logs directory and set log file path
+    logs_dir = output_dir / 'logs'
+    logs_dir.mkdir(parents=True, exist_ok=True)
+    log_file_path = logs_dir / 'pipeline.log'
+    
+    # Update config with absolute log file path
+    config_dict['pipeline']['log_file'] = str(log_file_path)
+    config = Config(config_dict)
+    
+    logger = setup_logging(config)
     
     if args.input:
         input_path = Path(args.input)
     else:
         input_path = script_dir / config.input_file
     
-    if args.output:
-        output_dir = Path(args.output)
-    else:
-        output_dir = script_dir / config.output_dir
-    
     if not input_path.exists():
         logger.error(f"Input file not found: {input_path}")
         sys.exit(1)
     
-    pipeline = DataQualityPipeline(str(input_path), str(output_dir), config_dict)
+    pipeline = DataQualityPipeline(str(input_path), str(output_dir), config_dict, logger)
     success = pipeline.run()
     
     sys.exit(0 if success else 1)
