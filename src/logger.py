@@ -155,12 +155,17 @@ def create_pipeline_logger(config: Dict[str, Any]) -> logging.Logger:
     pipeline_config = config.get('pipeline', {})
     logging_config = config.get('logging', {})
     
+    # Get log file path from config
+    log_file_path = Path(pipeline_config.get('log_file', 'output/logs/pipeline.log'))
+    log_dir = str(log_file_path.parent)
+    log_file = log_file_path.name
+    
     pipeline_logger = PipelineLogger(
         name='pipeline',
-        log_dir=pipeline_config.get('output_dir', 'output'),
-        log_file=Path(pipeline_config.get('log_file', 'output/pipeline.log')).name,
+        log_dir=log_dir,
+        log_file=log_file,
         level=pipeline_config.get('log_level', 'INFO'),
-        console_output=logging_config.get('console_output', True),
+        console_output=logging_config.get('console_output', False),
         structured=logging_config.get('structured', False),
         max_bytes=logging_config.get('max_bytes', 10 * 1024 * 1024),
         backup_count=logging_config.get('backup_count', 5),
