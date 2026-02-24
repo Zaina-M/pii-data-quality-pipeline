@@ -10,12 +10,19 @@ from typing import Dict, Any, Optional
 
 
 DEFAULT_CONFIG = {
-    'pipeline': {
-        'input_file': 'data/customers_raw.csv',
-        'output_dir': 'output',
-        'log_file': 'output/pipeline.log',
-        'log_level': 'INFO',
-    },
+ 'pipeline': {
+    'input_file': 'data/customers_raw.csv',
+    'output_dir': 'output',
+
+    # Structured outputs
+    'csv_dir': 'output/csv',
+    'reports_dir': 'output/reports',
+    'logs_dir': 'output/logs',
+
+    # Logging
+    'log_file': 'output/logs/pipeline.log',
+    'log_level': 'INFO',
+},
     'validation': {
         'name_min_length': 2,
         'name_max_length': 50,
@@ -181,3 +188,11 @@ class Config:
     @property
     def raw(self) -> Dict[str, Any]:
         return self._config
+
+
+def ensure_output_dirs(config: Dict[str, Any]) -> None:
+    pipeline = config.get('pipeline', {})
+    for key in ['output_dir', 'csv_dir', 'reports_dir', 'logs_dir']:
+        path = pipeline.get(key)
+        if path:
+            Path(path).mkdir(parents=True, exist_ok=True)            
